@@ -183,10 +183,8 @@ local function toggleBind()
     updateBindStatus()
     if bindEnabled then
         btn.TextColor3 = Color3.fromRGB(0, 0, 0)
-        print("Бинд на L включен")
     else
         btn.TextColor3 = Color3.fromRGB(255, 0, 0)
-        print("Бинд на L выключен")
     end
 end
 
