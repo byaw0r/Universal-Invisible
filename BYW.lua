@@ -46,7 +46,6 @@ local function toggleNoClip(state)
                 end
             end
         end)
-        print("NoClip включен")
     else
         if game.Players.LocalPlayer.Character then
             for _, v in pairs(game.Players.LocalPlayer.Character:GetDescendants()) do
@@ -55,7 +54,6 @@ local function toggleNoClip(state)
                 end
             end
         end
-        print("NoClip выключен")
     end
 end
 
@@ -143,7 +141,6 @@ local function toggleInvisibility()
             toggleNoClip(true)
             task.wait(0.08)
             btn.BackgroundColor3 = Color3.fromRGB(0, 255, 0)
-            print("Невидимость и NoClip включены")
         end
     else
         if seat then
@@ -154,7 +151,6 @@ local function toggleInvisibility()
         toggleNoClip(false)
         
         btn.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-        print("Невидимость и NoClip выключены")
     end
     task.wait(0.2)
     cooldown = false
