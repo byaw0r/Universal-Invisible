@@ -28,6 +28,15 @@ local cooldown = false
 local teleportOffset = Vector3.new(0, 800, 0)
 local noclip = false
 local noclipConnection = nil
+local bindEnabled = true
+local function updateBindStatus()
+    if bindEnabled then
+        btn.Text = "B"
+    else
+        btn.Text = "L"
+    end
+end
+
 local function toggleNoClip(state)
     if noclipConnection then
         noclipConnection:Disconnect()
@@ -156,10 +165,39 @@ local function toggleInvisibility()
     cooldown = false
 end
 
+local function handleBindInput(input, gameProcessed)
+    if not bindEnabled then return end
+    if gameProcessed then return end
+    
+    if input.KeyCode == Enum.KeyCode.G then
+        pcall(function()
+            toggleInvisibility()
+        end)
+    end
+end
+
+local UserInputService = game:GetService("UserInputService")
+local bindConnection = UserInputService.InputBegan:Connect(handleBindInput)
+local function toggleBind()
+    bindEnabled = not bindEnabled
+    updateBindStatus()
+    if bindEnabled then
+        btn.TextColor3 = Color3.fromRGB(0, 0, 0)
+        print("Бинд на L включен")
+    else
+        btn.TextColor3 = Color3.fromRGB(255, 0, 0)
+        print("Бинд на L выключен")
+    end
+end
+
 btn.MouseButton1Click:Connect(function()
     pcall(function()
         toggleInvisibility()
     end)
+end)
+
+btn.MouseButton2Click:Connect(function()
+    toggleBind()
 end)
 
 btn.MouseButton1Down:Connect(function()
@@ -182,5 +220,16 @@ game.Players.LocalPlayer.CharacterAdded:Connect(function(character)
         btn.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
     end
 end)
+
+screenGui.Destroying:Connect(function()
+    if bindConnection then
+        bindConnection:Disconnect()
+    end
+    if noclipConnection then
+        noclipConnection:Disconnect()
+    end
+end)
+
+updateBindStatus()
 
 print("BYW SCRIPT loaded!")
